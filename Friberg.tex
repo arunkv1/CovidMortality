@@ -1,0 +1,60 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tasks}
+
+\usepackage[top=1cm,bottom=1cm,left=1cm,right=1cm,marginparwidth=1.75cm]{geometry}
+
+\begin{document}
+
+\section*{Data Fusion}
+
+\begin{tasks}(2)
+\task  $FC_{1}(s,t) = (\frac{OBS_{m} (t)}{\overline{OBS_{m}}})_{krig} \times \overline{FC(s)}$
+$\\OBS_{m}$: daily observation at each monitor \\ $\overline{OBS_{m}}$: Annual mean level \\
+interpolated using the krig method \\
+$ \overline{FC(s)}$: CMAQ annual field adjusted to the annual mean observations
+
+\task $\overline{FC(s)} = \alpha_{year} \times \overline{CMAQ(s)}^{\beta}$\\
+
+$ \alpha_{year}$: regression parameter derived for each year \\
+$\overline{CMAQ(s)}$: CMAQ simulations at monitor locations over a year
+
+
+\task  $FC_{2}(s,t) = CMAQ(s,t) \times (\frac{\overline{FC(s)}}{\overline{CMAQ(s)}}) \times \beta_{season}(t)$\\
+
+$ \overline{FC(s)}$: CMAQ annual field adjusted to the annual mean observations\\
+$\overline{CMAQ(s)}$: CMAQ simulations at monitor locations over a year\\
+$\beta_{season}$: is the seasonal correction function \\
+
+
+\task  $rR{obs}(d) = R_{coll}e^{\frac{-d}{r}}$\\
+
+$rR{obs}(d)$: is the temporal Pearson correlation between observations from monitors a distance d apart\\
+$R_{coll}$: is the intercept which results from instrument error\\
+r: is the range at which the correlation between monitors has decreased to an e-folding of $R_{coll}$
+
+\task  $R_{1}(s,t) \approx R_{coll}e^{\frac{-x(s,t)}{r}}$
+\\
+$R_{1}$:  is the estimated temporal correlation of $FC_{1}$ and ambient pollution\\
+x: is the distance to the nearest observation
+
+
+\task  $R_{cmaq} = \frac{1}{N} \sum_{m=1}^{N} corr(OBS_{m}(t), CMAQ_{m}(t)) \approx R_{2}$\\
+
+N: Total number of monitors\\
+$R_{cmaq}$: values are provided in the table \\
+$R_{1} and R_{2}$: are conservative estimates of temporal variance in that FC1 uses information from multiple measurements and FC2 incorporates annual and seasonal adjustments to CMAQ.
+
+\task  $W(s,t) = \frac{R_{1}(s,t) \times (1-R_{2})}{R_{1}(s,t) \times (1-R_{2}) + R_{2} \times (1 - R_{1}(s,t))}$\\
+This formula is to measure the weighting factor. It is a number that varies over time. 
+\task  $FC_{opt}(s,t) = W(s,t) \times FC_{1}(s,t) + (1 - W(s,t)) \times FC_{2}(s,t)$\\
+this is also a weighting function and this basically uses the resemblance of FC1 and FC2 to help balance out the weighting measurement. 
+\task  $if R_{1} > R_{2}, R_{opt}(s, t) = W(s,t) \times R_{1}(s,t) + (1 - W(s,t)) \times R_{2} \\ Else, R_{opt} = R_{2}$
+this is the cross validation function for the weighting functions. 
+\end{tasks}
+
+\end{document}
